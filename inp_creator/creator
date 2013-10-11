@@ -1,0 +1,117 @@
+#!/usr/bin/ruby
+#encoding: cp866
+#  Без имени.rb
+#
+#  Copyright 2013 Mikhail Meshkov <mihailmes@gmail.com>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+#
+
+
+
+class String
+  def rr
+    if self[-1]=="\n" then return self.chop else return self end
+  end
+  def pp_block
+    if self[0..14]=='LANTHANUM  57.0'
+      $la.pp_add(self); $la.one_more
+    elsif self[0..14]=='OXYGEN      8.0'
+      $o.pp_add(self); $o.one_more
+    elsif self[0..14]=='HYDROGEN    1.0'
+      $h.pp_add(self); $h.one_more
+    #else puts self
+    end
+  end
+end
+
+
+########ATOMS########
+class Atom
+  def tbl(n)                                  #Определяем номер атома
+    @tbl = n
+  end
+  def num                                     #Количество
+    return @num
+  end
+  def def_num                                 #Объявляем количество
+    @num = 0
+  end
+  def one_more                                #Увеличиваем число
+    @num += 1
+  end
+  def pp_def(str)                             #Определяем файл с PP
+    @pp = IO.read(str)
+  end
+  def pp_add(str)                             #Дописываем PP под строкой
+    puts str.rr+@pp
+  end
+  def ecp_def(str)                            #Определяем файл с ECP
+    @ecp = IO.read(str)
+  end
+  def ecp_ndef(str)                           #Определяем нулевой ECP
+    @ecp = " #{str.upcase} none"
+  end
+  def ecp_add                                 #Дописываем ECP
+    puts @ecp
+  end
+end
+########ATOMS_END########
+
+######## TOP ########
+def top_def(str)
+  return Proc.new{$top = IO.open("#{str}.top")}
+end
+
+
+#$atoms = Hash['h',1,'o',8,'la',57]
+#$atoms_count = Array.new(100,0)
+#$pp = Array.new(100,'')
+
+#$pp[$atoms['la']] = IO.read('la.pp')
+
+######## La ########
+$la = Atom.new
+$la.def_num
+$la.pp_def('la.pp')
+$la.ecp_def('la.ecp')
+######## O ########
+$o = Atom.new
+$o.def_num
+$o.pp_def('o.pp')
+$o.ecp_ndef('o')
+######## H ########
+$h = Atom.new
+$h.def_num
+$h.pp_def('h.pp')
+$h.ecp_ndef('h')
+
+#atoms = [$la,$o, $h]
+
+#filename = gets.chomp
+filename = 'exp1'
+$stdout = File.open("#{filename}_r.inp", 'w')
+$top = IO.read("#{filename}.top")
+a = IO.read("#{filename}.inp")
+puts $top
+puts (" $DATA")
+a.each_line{|l| l.pp_block}
+puts (" $END\n $ECP")
+[$la,$o, $h].each {|a| a.num.times {a.ecp_add} }
+puts (' $END')
+
+
