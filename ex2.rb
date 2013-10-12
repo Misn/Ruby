@@ -28,20 +28,21 @@ class String
 		if self[-1]=="\n" then return self.chop else return self end
 	end
 	def tt
-		la = IO.read('la.pp')
-		o  = IO.read('o.pp')
-		h  = IO.read('h.pp')
-		if self[0..14]=='LANTHANUM  57.0' then puts self.rr+la
-		elsif self[0..14]=='OXYGEN      8.0' then puts self.rr+o
-		elsif self[0..14]=='HYDROGEN    1.0' then puts self.rr+h
+		if self[0..14]=='LANTHANUM  57.0' then puts self.rr+$la
+		elsif self[0..14]=='OXYGEN      8.0' then puts self.rr+$o
+		elsif self[0..14]=='HYDROGEN    1.0' then puts self.rr+$h
 		else puts self 
 		end
 	end
 end
 
+$la = IO.read('la.pp')
+$o  = IO.read('o.pp')
+$h  = IO.read('h.pp')
 
-$stdout = File.open('exp1_r.inp', 'w')
-a = IO.read('exp1.inp')
+filename = gets.chomp
+$stdout = File.open(filename+'.inp', 'w')
+a = IO.read(filename+'_nb.inp')
 a.each_line{|p| p.tt}
 
 

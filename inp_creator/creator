@@ -42,31 +42,28 @@ end
 
 ########ATOMS########
 class Atom
-  def tbl(n)                                  #Определяем номер атома
-    @tbl = n
-  end
-  def num                                     #Количество
+  def num                                     #Number
     return @num
   end
-  def def_num                                 #Объявляем количество
+  def def_num                                 #Number def
     @num = 0
   end
-  def one_more                                #Увеличиваем число
+  def one_more                                #Number increase
     @num += 1
   end
-  def pp_def(str)                             #Определяем файл с PP
+  def pp_def(str)                             #PP-file def
     @pp = IO.read(str)
   end
-  def pp_add(str)                             #Дописываем PP под строкой
+  def pp_add(str)                             #PP puts
     puts str.rr+@pp
   end
-  def ecp_def(str)                            #Определяем файл с ECP
+  def ecp_def(str)                            #ECP-file def
     @ecp = IO.read(str)
   end
-  def ecp_ndef(str)                           #Определяем нулевой ECP
+  def ecp_ndef(str)                           #Empty ECP def
     @ecp = " #{str.upcase} none"
   end
-  def ecp_add                                 #Дописываем ECP
+  def ecp_add                                 #ECP puts
     puts @ecp
   end
 end
@@ -108,7 +105,7 @@ $stdout = File.open("#{filename}_r.inp", 'w')
 $top = IO.read("#{filename}.top")
 a = IO.read("#{filename}.inp")
 puts $top
-puts (" $DATA")
+puts (' $DATA')
 a.each_line{|l| l.pp_block}
 puts (" $END\n $ECP")
 [$la,$o, $h].each {|a| a.num.times {a.ecp_add} }
