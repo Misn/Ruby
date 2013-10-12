@@ -39,8 +39,11 @@ class String
   end
 end
 
-
 ########ATOMS########
+$atoms = [1..100]
+$atoms.each{|a| a=Atom.new}
+
+########ATOM########
 class Atom
   def num                                     #Number
     return @num
@@ -67,7 +70,7 @@ class Atom
     puts @ecp
   end
 end
-########ATOMS_END########
+########ATOM_END########
 
 ######## TOP ########
 def top_def(str)
